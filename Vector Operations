@@ -1,0 +1,252 @@
+1) Operations suported by vector 
+Vector Function
+
+push_back() - Adds an element to the end of the vector.
+pop_back() - Removes the last element of the vector.
+size() -Returns the number of elements in the vector.
+max_size() - Returns the maximum number of elements that the vector can hold.
+resize() - Changes the size of the vector.
+empty() - Checks if the vector is empty.
+operator[] - Accesses the element at a specific position.
+at() - Accesses the element at a specific position, with bounds checking.
+front() - Accesses the first element of the vector.
+back() - Accesses the last element of the vector.
+begin() - Returns an iterator pointing to the first element of the vector.
+end() - Returns an iterator pointing to the past-the-end element of the vector.
+rbegin() - Returns a reverse iterator pointing to the last element of the vector.
+rend() - Returns a reverse iterator pointing to the element preceding the first element of the vector.
+cbegin - Returns const_iterator to beginning 
+cend - Returns const_iterator to end
+crbegin - Returns const_reverse_iterator to reverse beginning
+crend - Returns const_reverse_iterator to reverse end
+insert() - Inserts elements at a specific position in the vector.
+erase() - Removes elements from a specific position or range in the vector.
+swap() - Swaps the contents of the vector with those of another vector.
+clear() - Removes all elements from the vector.
+emplace() - Constructs and inserts an element in the vector.
+emplace_back() - Constructs and inserts an element at the end of the vector.
+assign() - Assigns new values to the vector elements by replacing old ones.
+capacity() - Returns the size of the storage space currently allocated to the vector.
+reserve() - Requests that the vector capacity be at least enough to contain a specified number of elements.
+shrink_to_fit() - Reduces memory usage by freeing unused space.
+data() - Returns a direct pointer to the memory array used internally by the vector to store its owned elements. 
+get_allocator - Returns a copy of the allocator object associated with the vector.
+
+2) Check if a Vector Contains a Given Element in C++
+
+int main() 
+{ 
+    // Define a vector of doubles and a target value 
+    vector<double> values = { 1.5, 2.5, 3.5, 4.5 }; 
+    double target = 3.5; 
+  
+    // Count the occurrences of the target value in the 
+    // vector 
+    int cnt = count(values.begin(), values.end(), target); 
+  
+    // Check if the target value was found 
+    if (cnt > 0) { 
+        cout << "Element found in vector.\n"; 
+    } 
+    else { 
+        cout << "Element not found in vector.\n"; 
+    } 
+  
+    return 0; 
+}
+
+Time Complexity: O(n), where n is the number of elements in the vector.
+Space Complexity: O(1)
+
+or you can also use , find() function to get the first occurrence of the target.
+
+std::find is a function defined inside <algorithm> header file that finds the element in the given range. 
+It returns an iterator to the first occurrence of the specified element in the given sequence. If the element is not found, an iterator to the end is returned.
+
+// C++ program to Demonstrate
+// std::find for vectors
+#include <bits/stdc++.h>
+
+// Driver code
+int main()
+{
+std::vector<int> vec{10, 20, 30, 40};
+
+// Iterator used to store the position
+// of searched element
+std::vector<int>::iterator it;
+
+// Print Original Vector
+std::cout << "Original vector :";
+
+for (int i = 0; i < vec.size(); i++)
+	std::cout << " " << vec[i];
+
+std::cout << "\n";
+
+// Element to be searched
+int ser = 30;
+
+// std::find function call
+it = std::find(vec.begin(), 
+				vec.end(), ser);
+if (it != vec.end()) 
+{
+	std::cout << "Element " << ser << 
+				" found at position : ";
+	std::cout << it - vec.begin() << 
+				" (counting from zero) \n";
+}
+else
+	std::cout << "Element not found.\n\n";
+
+return 0;
+}
+
+
+3) How to find index of a given element in a Vector in C++
+
+// C++ program to find the index 
+// of an element in a vector 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+// Function to print the 
+// index of an element 
+void getIndex(vector<int> v, int K) 
+{ 
+	auto it = find(v.begin(), v.end(), K); 
+
+	// If element was found 
+	if (it != v.end()) 
+	{ 
+	
+		// calculating the index 
+		// of K 
+		int index = it - v.begin(); 
+		cout << index << endl; 
+	} 
+	else { 
+		// If the element is not 
+		// present in the vector 
+		cout << "-1" << endl; 
+	} 
+} 
+// Driver Code 
+int main() 
+{ 
+	// Vector 
+	vector<int> v = { 1, 45, 54, 71, 76, 17 }; 
+	// Value whose index 
+	// needs to be found 
+	int K = 54; 
+	getIndex(v, K); 
+	return 0; 
+}
+
+
+Time Complexity: O(N) 
+Auxiliary Space: O(1)
+
+
+4) Sorting a vector 
+
+// C++ program to sort a vector in non-decreasing 
+// order. 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+int main() 
+{ 
+	vector<int> v{ 1, 5, 8, 9, 6, 7, 3, 4, 2, 0 }; 
+
+	sort(v.begin(), v.end()); 
+
+	cout << "Sorted \n"; 
+	for (auto x : v) 
+		cout << x << " "; 
+
+	return 0; 
+} 
+
+// C++ program to sort a vector in non-increasing 
+// order. 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+int main() 
+{ 
+	vector<int> v{ 1, 5, 8, 9, 6, 7, 3, 4, 2, 0 }; 
+
+	sort(v.begin(), v.end(), greater<int>()); 
+
+	cout << "Sorted \n"; 
+	for (auto x : v) 
+		cout << x << " "; 
+
+	return 0; 
+} 
+
+
+// A C++ program to sort vector using 
+// our own comparator 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+// An interval has start time and end time 
+struct Interval { 
+	int start, end; 
+}; 
+
+// Compares two intervals according to starting times. 
+bool compareInterval(Interval i1, Interval i2) 
+{ 
+	return (i1.start < i2.start); 
+} 
+
+int main() 
+{ 
+	vector<Interval> v { { 6, 8 }, { 1, 9 }, { 2, 4 }, { 4, 7 } }; 
+
+	// sort the intervals in increasing order of 
+	// start time 
+	sort(v.begin(), v.end(), compareInterval); 
+
+	cout << "Intervals sorted by start time : \n"; 
+	for (auto x : v) 
+		cout << "[" << x.start << ", " << x.end << "] "; 
+
+	return 0; 
+} 
+
+// A C++ program to sort vector using 
+// our own comparator 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+// An interval has start time and end time 
+struct Interval { 
+	int start, end; 
+}; 
+
+// Compares two intervals according to ending times in descending order. 
+bool compareInterval(Interval i1, Interval i2) 
+{ 
+	return (i1.end > i2.end); 
+} 
+
+int main() 
+{ 
+	vector<Interval> v { { 6, 8 }, { 1, 9 }, { 2, 4 }, { 4, 7 } }; 
+
+	// sort the intervals in decreasing order of 
+	// end time 
+	sort(v.begin(), v.end(), compareInterval); 
+
+	cout << "Intervals sorted by ending time in descending order : \n"; 
+	for (auto x : v) 
+		cout << "[" << x.start << ", " << x.end << "] "; 
+
+	return 0; 
+} 
+
