@@ -1,0 +1,107 @@
+
+/**LRU Cache Implementation**/
+
+/**Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations:**
+- `get(key)`: Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+- `put(key, value)`: Set or insert the value if the key is not already present. When the cache reaches its capacity, it should invalidate the least recently used item before inserting a new item.
+
+** Constraints:
+- All operations must run in **O(1)** time*/
+
+Use a combination of:
+/**Hash Map** for O(1) access to cache items.**/
+/**Doubly Linked List** to track the usage order.**/
+
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+struct Node {
+    int key, value;
+    Node* prev;
+    Node* next;
+    Node(int k, int v) : key(k), value(v), prev(nullptr), next(nullptr) {}
+};
+
+class LRUCache {
+private:
+    int capacity;
+    unordered_map<int, Node*> cache;
+    Node* head;
+    Node* tail;
+
+    void remove(Node* node) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+    void insertAtHead(Node* node) {
+        node->next = head->next;
+        node->prev = head;
+        head->next->prev = node;
+        head->next = node;
+    }
+
+public:
+    LRUCache(int capacity) : capacity(capacity) {
+        head = new Node(0, 0); // dummy head
+        tail = new Node(0, 0); // dummy tail
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int key) {
+        if (cache.find(key) == cache.end())
+            return -1;
+
+        Node* node = cache[key];
+        remove(node);
+        insertAtHead(node);
+        return node->value;
+    }
+
+    void put(int key, int value) {
+        if (cache.find(key) != cache.end()) {
+            Node* node = cache[key];
+            node->value = value;
+            remove(node);
+            insertAtHead(node);
+        } else {
+            if (cache.size() == capacity) {
+                Node* lru = tail->prev;
+                remove(lru);
+                cache.erase(lru->key);
+                delete lru;
+            }
+            Node* newNode = new Node(key, value);
+            insertAtHead(newNode);
+            cache[key] = newNode;
+        }
+    }
+
+    ~LRUCache() {
+        while (head) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
+int main() {
+    LRUCache lru(2);
+
+    lru.put(1, 1);
+    lru.put(2, 2);
+    cout << lru.get(1) << endl; // returns 1
+
+    lru.put(3, 3);              // evicts key 2
+    cout << lru.get(2) << endl; // returns -1 (not found)
+
+    lru.put(4, 4);              // evicts key 1
+    cout << lru.get(1) << endl; // returns -1 (not found)
+    cout << lru.get(3) << endl; // returns 3
+    cout << lru.get(4) << endl; // returns 4
+
+    return 0;
+}
